@@ -1,4 +1,8 @@
 """
+Practice Mini-project for Coursera Principles of Computing
+
+Jari Leppanen 2015
+
 Student facing implement of solitaire version of Mancala - Tchoukaillon
 
 Goal: Move as many seeds from given houses into the store
