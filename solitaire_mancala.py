@@ -6,7 +6,7 @@ Goal: Move as many seeds from given houses into the store
 In GUI, you make ask computer AI to make move or click to attempt a legal move
 """
 
-# URL = #user40_t2XbRk5szUCPTV7.py
+# URL = #user40_w4MeizzGOm7VLtX.py
 
 class SolitaireMancala:
     """
@@ -17,7 +17,7 @@ class SolitaireMancala:
         """
         Create Mancala game with empty store and no houses
         """
-        self._configuration = [0]
+        self._board = [0]
     
     def set_board(self, configuration):
         """
@@ -25,21 +25,21 @@ class SolitaireMancala:
         house zero corresponds to the store and is on right
         houses are number in ascending order from right to left
         """
-        self._configuration = []
+        self._board = []
         for house in range(0, len(configuration)):
-            self._configuration.append(configuration[house])
+            self._board.append(configuration[house])
     
     def __str__(self):
         """
         Return string representation for Mancala board
         """
-        right = len(self._configuration) - 1
+        right = len(self._board) - 1
         board_str = "["
         while right > 0:
-            board_str += str(self._configuration[right])
+            board_str += str(self._board[right])
             board_str += ", "
             right -= 1
-        board_str += str(self._configuration[right])
+        board_str += str(self._board[right])
         board_str += "]"
         return board_str
     
@@ -47,13 +47,13 @@ class SolitaireMancala:
         """
         Return the number of seeds in given house on board
         """
-        return self._configuration[house_num]
+        return self._board[house_num]
 
     def is_game_won(self):
         """
         Check to see if all houses but house zero are empty
         """
-        for house in range(1, len(self._configuration)):
+        for house in range(1, len(self._board)):
             if self.get_num_seeds(house) != 0:
                 return False
         return True
@@ -75,10 +75,10 @@ class SolitaireMancala:
         Last seed must be played in the store (house zero)
         """
         if self.is_legal_move(house_num):
-            self._configuration[house_num] = 0
+            self._board[house_num] = 0
             seeds = house_num
             while seeds > 0:
-                self._configuration[seeds - 1] += 1    
+                self._board[seeds - 1] += 1    
                 seeds -= 1
 
     def choose_move(self):
@@ -88,7 +88,7 @@ class SolitaireMancala:
         Note that using a longer legal move would make smaller illegal
         If no legal move, return house zero
         """
-        for house in range(1, len(self._configuration)):
+        for house in range(1, len(self._board)):
             if self.is_legal_move(house):
                 return house
         return 0
@@ -100,56 +100,15 @@ class SolitaireMancala:
         when given a choice of legal moves
         Not used in GUI version, only for machine testing
         """
-        test_conf = self._configuration
+        temp_game = SolitaireMancala()
+        temp_game.set_board(self._board)
         move_set = []
-        def test_get_num_seeds(house_num):
-            """
-            Same like in the other
-            """
-            return test_conf[house_num]    
-        def test_is_legal_move(house_num):
-            """
-            Same like in the other
-            """
-            if house_num == 0:
-                return False
-            elif test_get_num_seeds(house_num) == house_num:
-                return True
-            else:
-                return False
-        def test_choose_move():
-            """
-            Same like in the other
-            """
-            for house in range(1, len(test_conf)):
-                if test_is_legal_move(house):
-                    return house
-            return 0
-        def test_is_game_won():
-            """
-            Same like in the other
-            """
-            for house in range(1, len(test_conf)):
-                if test_get_num_seeds(house) != 0:
-                    return False
-            return True
-        def test_apply_move(house_num):
-            """
-            Same like in the other
-            """
-            if test_is_legal_move(house_num):
-                test_conf[house_num] = 0
-                seeds = house_num
-                while seeds > 0:
-                   test_conf[seeds - 1] += 1    
-                   seeds -= 1
-    
-        while test_is_game_won() == False:
-            if test_choose_move() == 0:
+        while temp_game.is_game_won() == False:
+            if temp_game.choose_move() == 0:
                 return move_set
             else:
-                house = test_choose_move();
-                test_apply_move(house)
+                house = temp_game.choose_move();
+                temp_game.apply_move(house)
                 move_set.append(house)
         return move_set
  
