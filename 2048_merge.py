@@ -6,6 +6,8 @@ Jari Leppanen 2015
 Merge function for 2048 game.
 """
 
+#URL = #user40_s63JVYvick_0.py
+
 def merge(line):
     """
     Function that merges a single row or column in 2048.
